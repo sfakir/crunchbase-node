@@ -12,6 +12,9 @@
     "wrapper",
     "rest"
   ],
+  "scripts": {
+    "test": "NODE_ENV=test env TZ='Europe/Berlin' mocha spec/*"
+  },
   "author": "Hamza Waqas <hamzawaqas.programmer@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -19,8 +22,9 @@
   },
   "homepage": "https://github.com/ArkeologeN/crunchbase-node",
   "dependencies": {
-    "request": "~2.30.0",
+    "jasmine-node": "*",
     "lodash": "~2.4.1",
-    "jasmine-node": "*"
+    "request": "~2.30.0",
+    "restler": "^3.4.0"
   }
 }

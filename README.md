@@ -14,6 +14,14 @@ Once installed, its easy to use it:
 var crunchbase = require('node-crunchbase')('app_key_id_here');
 ```
 
+
+
+# test
+
+1.  open apikey.js and replace PUT_YOUR_KEY_FOR_TESTS_HERE with your key
+2. run npm test
+
+
 I'm in hurry! Please look at `spec/test_spec.js` in order to understand the usage.
 
 ## Contribution

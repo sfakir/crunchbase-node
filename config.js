@@ -5,6 +5,7 @@
 
 module.exports = function() {
     return {
-        api_url: 'http://api.crunchbase.com/v/1/'
+        api_url: 'https://api.crunchbase.com/v/3/',
+        api_key: 'PUT_YOUR_KEY_FOR_TESTS_HERE'
     };
 }();
