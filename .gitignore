@@ -9,6 +9,7 @@ lib-cov
 .idea/
 
 apikey.js
+/apikey.js
 
 pids
 logs

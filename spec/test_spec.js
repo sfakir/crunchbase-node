@@ -2,84 +2,57 @@ var key = require('../apikey.js');
 
 
 var Crunchbase = require('../lib/main.js')
-    , request = require('request')
     , _ = require('lodash');
 
 var expect = require('chai').expect;
+var assert = require('chai').assert;
+
+var client = new Crunchbase(key.key);
 
 
-var crunchbase = new Crunchbase(key.key);
-
-
-describe('CrunchBase Test Suite', function() {
-    it('should load it successfully', function(done) {
-        expect(crunchbase).not.toBe(null);
+describe('CrunchBase Test Suite', function () {
+    it('should load it successfully', function (done) {
+        assert.notEqual(client, null);
+        expect(client).to.be.an('object');
         done();
     });
 
 
-    it('should fetch entity successfully', function(done) {
-
-        crunchbase
-            .getOne('organizations', '613ee49a7c9550518d0f5bd008169330')
-            .on('complete',function(err, body) {
-            // console.log(err,body);
-            // expect(err).toBe(null);
-            // expect(body).not.toBe(null);
-            // expect(typeof body).toBe('string');
-            // body = JSON.parse(body);
-            // expect(body.name).toBe('Dropbox');
-            done();
-        });
+    it('should fetch organisation successfully', function (done) {
+        client
+            .getOne('organizations', 'ian-leaf-fraud')
+            .on('complete', function (result, response) {
+                expect(result).to.be.an('object');
+                expect(result.data).to.be.an('object');
+                expect(result.data.type).to.equal('Organization');
+                done();
+            });
     });
-    //
-    // it('should fetch entities successfully', function(done) {
-    //     crunchbase.entities('companies', function(err, body) {
-    //         expect(err).toBe(null);
-    //         expect(body).not.toBe(null);
-    //         expect(typeof body).toBe('string');
-    //         done();
-    //     });
-    // });
-    //
-    // it('should search by query', function(done) {
-    //     crunchbase.search({
-    //         query: 'instagram'
-    //     }, function(err, body) {
-    //         expect(err).toBe(null);
-    //         expect(body).not.toBe(null);
-    //         expect(typeof body).toBe('string');
-    //         body = JSON.parse(body);
-    //         expect(body.total).toBeGreaterThan(0);
-    //         expect(_.isArray(body.results)).toBeTruthy();
-    //         done();
-    //     })
-    // });
-    //
-    // it('should search by query & entity', function(done) {
-    //     crunchbase.search({
-    //         query: 'instagram',
-    //         entity: 'company'
-    //     }, function(err, body) {
-    //         expect(err).toBe(null);
-    //         expect(body).not.toBe(null);
-    //         expect(typeof body).toBe('string');
-    //         body = JSON.parse(body);
-    //         expect(_.isArray(body.results)).toBeTruthy();
-    //         done();
-    //     });
-    // });
-    //
-    // it('should search by query, entity and field', function(done) {
-    //     crunchbase.search({
-    //         query: 'instagram',
-    //         entity: 'company',
-    //         field: 'homepage_url'
-    //     }, function(err, body) {
-    //         expect(err).toBe(null);
-    //         expect(body).not.toBe(null);
-    //         expect(typeof body).toBe('string');
-    //         done();
-    //     });
-    // });
+    
+    it('should fetch organisation successfully', function (done) {
+        client
+            .getMany('organizations')
+            .on('complete', function (result, response) {
+                expect(result).to.be.an('object');
+                expect(result.data).to.be.an('object');
+                expect(result.data.items).to.be.instanceof(Array);
+                expect(result.data.items[0].type).to.equal('OrganizationSummary');
+                expect(result.data.items[0].properties.name).to.be.a('string');
+                done();
+            });
+    });
+    it('should fetch second page', function (done) {
+        var params = {page: 2};
+        client
+            .getMany('organizations',params)
+            .on('complete', function (result, response) {
+                expect(result).to.be.an('object');
+                expect(result.data).to.be.an('object');
+                expect(result.data.items).to.be.instanceof(Array);
+                expect(result.data.items[0].properties.name).to.be.a('string');
+                expect(result.data.paging.current_page).to.equal(2);
+                done();
+            });
+    });
 });
+
